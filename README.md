@@ -90,39 +90,6 @@ Este repositório não especifica uma licença no momento. Adicione um arquivo `
 
 ## Arvore de diretorio
 
-smartFish_modulo_alimentador
-├─ .clangd
-├─ .devcontainer
-│  ├─ Dockerfile
-│  └─ devcontainer.json
-├─ CMakeLists.txt
-├─ README.md
-├─ docs
-│  ├─ ds15b20_datasheet.pdf
-│  └─ images
-│     ├─ D_NQ_NP_2X_638277-MLB51235161715_082022-F.webp
-│     ├─ ESP32-DevKit-V1-Pinout-Diagram.png
-│     ├─ modoulo_sensor_ph.png
-│     └─ sensor_modulo_hp.jpg
-└─ main
-   ├─ CMakeLists.txt
-   ├─ app
-   │  ├─ main.c
-   │  └─ maino.c
-   └─ infra
-      ├─ drivers
-      │  └─ motor_stepp
-      │     ├─ feeder_controller.c
-      │     └─ feeder_controller.h
-      └─ sensors
-         ├─ ds18b20
-         │  ├─ ds18b20.c
-         │  ├─ ds18b20.h
-         │  └─ ds18b20co.c
-         └─ ph
-            ├─ ph.c
-            └─ ph.h
-
 ```
 smartFit_modulo_alimentador
 ├─ .clangd
