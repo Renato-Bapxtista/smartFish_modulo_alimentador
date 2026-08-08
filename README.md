@@ -122,3 +122,68 @@ smartFish_modulo_alimentador
          └─ ph
             ├─ ph.c
             └─ ph.h
+
+```
+smartFit_modulo_alimentador
+├─ .clangd
+├─ .devcontainer
+│  ├─ devcontainer.json
+│  └─ Dockerfile
+├─ CMakeLists.txt
+├─ components
+│  ├─ button
+│  │  ├─ button.cpp
+│  │  ├─ CMakeLists.txt
+│  │  └─ include
+│  │     └─ button.hpp
+│  ├─ core
+│  │  ├─ adapters
+│  │  │  ├─ adapters.h
+│  │  │  ├─ feeder_adapter.cpp
+│  │  │  ├─ inmemory_adapters.cpp
+│  │  │  └─ sqlite_adapters.cpp
+│  │  ├─ CMakeLists.txt
+│  │  ├─ core.cpp
+│  │  └─ include
+│  │     ├─ domain.h
+│  │     ├─ ports.h
+│  │     └─ usecases.h
+│  ├─ ds18b20
+│  │  ├─ CMakeLists.txt
+│  │  ├─ ds18b20.cpp
+│  │  └─ include
+│  │     └─ ds18b20.h
+│  ├─ feeder_controller
+│  │  ├─ CMakeLists.txt
+│  │  ├─ feeder_controller.c
+│  │  └─ include
+│  │     └─ feeder_controller.h
+│  ├─ mq135
+│  │  ├─ CMakeLists.txt
+│  │  ├─ include
+│  │  │  └─ mq135.h
+│  │  └─ mq135.cpp
+│  ├─ ph_sensor
+│  │  ├─ CMakeLists.txt
+│  │  ├─ include
+│  │  │  └─ ph_sensor.h
+│  │  └─ ph_sensor.cpp
+│  ├─ web_server
+│  │  ├─ CMakeLists.txt
+│  │  ├─ include
+│  │  │  └─ web_server.h
+│  │  └─ web_server.cpp
+│  └─ web_ui
+│     └─ www
+│        ├─ app.js
+│        ├─ index.html
+│        └─ style.css
+├─ documents
+│  ├─ core_spec.md
+│  └─ criacao_tilapia.pdf
+├─ main
+│  ├─ CMakeLists.txt
+│  └─ main.cpp
+└─ README.md
+
+```

@@ -215,7 +215,7 @@ extern "C" void app_main(void) {
     Core::init();
 
     // AGORA o servidor iniciará de maneira estável
-    start_web_server();
+    start_smartfish_server();
 
     button::Button::State previousState = button::Button::State::Released;
 
