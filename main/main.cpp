@@ -58,7 +58,7 @@ static void wifi_init_sta(void) {
 
 // Função auxiliar simples para inicializar o Wi-Fi em modo Access Point (AP) para o Web Server
 // Caso seu projeto use modo Estação (conectando no Wi-Fi de casa), ajuste esta função.
-static void wifi_init_softap_basic(void) {
+/* static void wifi_init_softap_basic(void) {
     esp_netif_create_default_wifi_ap();
     wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
@@ -80,7 +80,7 @@ static void wifi_init_softap_basic(void) {
     ESP_ERROR_CHECK(esp_wifi_start());
     printf("=== Wi-Fi inicializado em modo SoftAP (SSID: %s) ===\n", ssid);
 }
-
+ */
 static void telemetry_task(void *pvParameters) {
     printf("=== Iniciando Tarefa de Telemetria (Assíncrona) ===\n");
     while (true) {
