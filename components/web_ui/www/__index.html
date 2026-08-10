@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>smartFit - Painel</title> 
+  <link rel="stylesheet" type="text/css" href="/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <h1>SmartFish</h1>
+      <div class="sub">Sistema Operacional • Todos os sensores ativos</div>
+    </div>
+    <div class="header-actions">
+      <button id="btn-refresh">Atualizar</button>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <button class="nav-item active">Início</button>
+    <button class="nav-item">Monitor</button>
+    <button class="nav-item">Agenda</button>
+    <button class="nav-item" disabled>Câmera</button>
+    <button class="nav-item">Alertas</button>
+  </nav>
+
+  <main class="container">
+    <section class="overview">
+      <div class="tile temp">
+        <div class="tile-title">Temperatura</div>
+        <div class="tile-value" id="temp">-- °C</div>
+      </div>
+      <div class="tile ph">
+        <div class="tile-title">Nível de pH</div>
+        <div class="tile-value" id="ph">--</div>
+      </div>
+      <div class="tile next-feed">
+        <div class="tile-title">Próxima alimentação</div>
+        <div class="tile-value" id="next-feed">--</div>
+      </div>
+      <div class="tile camera">
+        <div class="tile-title">Câmera (desabilitada)</div>
+        <div class="tile-value">—</div>
+      </div>
+    </section>
+
+    <section class="card actions">
+      <h2>Ações Rápidas</h2>
+      <div class="actions-row">
+        <button id="btn-feed-now" class="action-primary">Alimentar Agora</button>
+        <button id="btn-view-camera" disabled>Ver Câmera</button>
+      </div>
+    </section>
+
+    <section class="card history-card">
+      <h2>Histórico</h2>
+      <ul id="history"></ul>
+    </section>
+  </main>
+
+  <footer class="app-footer">Versão embarcada - sem câmera</footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
