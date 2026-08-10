@@ -1,66 +1,365 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>smartFit - Painel</title> 
-  <link rel="stylesheet" type="text/css" href="/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartFish - Sistema Completo</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-  <header class="app-header">
-    <div class="brand">
-      <h1>SmartFish</h1>
-      <div class="sub">Sistema Operacional • Todos os sensores ativos</div>
-    </div>
-    <div class="header-actions">
-      <button id="btn-refresh">Atualizar</button>
-    </div>
-  </header>
+<body class="bg-gray-100 font-sans text-gray-800 flex h-screen overflow-hidden">
 
-  <nav class="main-nav">
-    <button class="nav-item active">Início</button>
-    <button class="nav-item">Monitor</button>
-    <button class="nav-item">Agenda</button>
-    <button class="nav-item" disabled>Câmera</button>
-    <button class="nav-item">Alertas</button>
-  </nav>
+    <!-- SIDEBAR -->
+    <aside class="w-64 bg-[#0B132B] text-white flex flex-col justify-between shrink-0">
+        <div>
+            <!-- Logo / Header -->
+            <div class="p-5 flex items-center space-x-3 border-b border-gray-800">
+                <div class="bg-blue-600 p-2 rounded-lg text-white">
+                    <i data-lucide="fish" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg tracking-wide">SmartFish</h1>
+                    <span class="text-xs text-blue-400 font-medium">MÓDULO ALIMENTADOR</span>
+                </div>
+            </div>
 
-  <main class="container">
-    <section class="overview">
-      <div class="tile temp">
-        <div class="tile-title">Temperatura</div>
-        <div class="tile-value" id="temp">-- °C</div>
-      </div>
-      <div class="tile ph">
-        <div class="tile-title">Nível de pH</div>
-        <div class="tile-value" id="ph">--</div>
-      </div>
-      <div class="tile next-feed">
-        <div class="tile-title">Próxima alimentação</div>
-        <div class="tile-value" id="next-feed">--</div>
-      </div>
-      <div class="tile camera">
-        <div class="tile-title">Câmera (desabilitada)</div>
-        <div class="tile-value">—</div>
-      </div>
-    </section>
+            <!-- Menu Principal -->
+            <div class="px-4 py-6">
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-3">Principal</p>
+                <nav class="space-y-1">
+                    <button onclick="mudarPagina('dashboard')" id="nav-dashboard" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white shadow-md transition cursor-pointer">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="text-sm font-medium">Dashboard</span>
+                    </button>
+                    <button onclick="mudarPagina('monitoramento')" id="nav-monitoramento" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition cursor-pointer">
+                        <i data-lucide="activity" class="w-5 h-5"></i>
+                        <span class="text-sm font-medium">Monitoramento</span>
+                    </button>
+                    <button onclick="mudarPagina('agenda')" id="nav-agenda" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition cursor-pointer">
+                        <i data-lucide="calendar" class="w-5 h-5"></i>
+                        <span class="text-sm font-medium">Agenda</span>
+                    </button>
+                    <button onclick="mudarPagina('alertas')" id="nav-alertas" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition justify-between cursor-pointer">
+                        <div class="flex items-center space-x-3">
+                            <i data-lucide="bell" class="w-5 h-5"></i>
+                            <span class="text-sm font-medium">Alertas</span>
+                        </div>
+                        <span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
 
-    <section class="card actions">
-      <h2>Ações Rápidas</h2>
-      <div class="actions-row">
-        <button id="btn-feed-now" class="action-primary">Alimentar Agora</button>
-        <button id="btn-view-camera" disabled>Ver Câmera</button>
-      </div>
-    </section>
+        <!-- Footer da Sidebar -->
+        <div class="p-4 border-t border-gray-800 space-y-4">
+            <div class="bg-gray-900/60 p-3 rounded-lg border border-gray-800">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></span>
+                    <span class="text-xs font-semibold text-gray-300">Sistema Operacional</span>
+                </div>
+                <p class="text-[11px] text-gray-500 mt-1">Sync: 1 min atrás</p>
+            </div>
 
-    <section class="card history-card">
-      <h2>Histórico</h2>
-      <ul id="history"></ul>
-    </section>
-  </main>
+            <div class="flex items-center space-x-3 pt-2">
+                <div class="w-9 h-9 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center font-bold">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <p class="text-sm font-semibold truncate">João Produtor</p>
+                    <p class="text-xs text-gray-400 truncate">Administrador</p>
+                </div>
+            </div>
+        </div>
+    </aside>
 
-  <footer class="app-footer">Versão embarcada - sem câmera</footer>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="flex-1 flex flex-col overflow-y-auto">
+        
+        <!-- Header Superior Fixo -->
+        <header class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center shrink-0">
+            <div>
+                <h2 id="page-title" class="text-xl font-bold text-gray-900">Dashboard</h2>
+                <p id="page-subtitle" class="text-xs text-gray-500">Visão geral do sistema SmartFish</p>
+            </div>
+            <div class="flex items-center space-x-6">
+                <span class="text-xs font-medium text-gray-500 bg-gray-100 px-3 py-1.5 rounded-lg border border-gray-200">
+                    Segunda-Feira, 10 De Agosto De 2026
+                </span>
+                <button onclick="alert('Iniciando rotina de calibração dos sensores...')" class="flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-xs font-bold border border-blue-200 bg-blue-50 hover:bg-blue-100 px-3.5 py-2 rounded-lg transition cursor-pointer">
+                    <i data-lucide="settings-2" class="w-4 h-4"></i>
+                    <span>Calibrar Sensores</span>
+                </button>
+            </div>
+        </header>
 
-  <script src="/app.js"></script>
+        <!-- CONTAINER DAS PÁGINAS -->
+        <div class="p-8 flex-1">
+
+            <!-- ================= PAGINA: DASHBOARD ================= -->
+            <div id="view-dashboard" class="space-y-6">
+                <!-- Cards Superiores -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="bg-blue-50 text-blue-600 p-2 rounded-lg"><i data-lucide="thermometer" class="w-5 h-5"></i></div>
+                            <span class="text-xs text-blue-500 font-bold">Ideal</span>
+                        </div>
+                        <h3 class="text-2xl font-black text-gray-900">24.5 °C</h3>
+                        <p class="text-xs text-gray-500 mt-1">Temperatura</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="bg-green-50 text-green-600 p-2 rounded-lg"><i data-lucide="activity" class="w-5 h-5"></i></div>
+                            <span class="text-xs text-green-500 font-bold">Estável</span>
+                        </div>
+                        <h3 class="text-2xl font-black text-gray-900">7.25 pH</h3>
+                        <p class="text-xs text-gray-500 mt-1">Nível de pH</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="bg-indigo-50 text-indigo-600 p-2 rounded-lg"><i data-lucide="wind" class="w-5 h-5"></i></div>
+                            <span class="text-xs text-indigo-500 font-bold">Bom</span>
+                        </div>
+                        <h3 class="text-2xl font-black text-gray-900">8.2 mg/L</h3>
+                        <p class="text-xs text-gray-500 mt-1">Oxigênio Dissolvido</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-start mb-2">
+                            <div class="bg-amber-50 text-amber-600 p-2 rounded-lg"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                            <span class="text-xs text-amber-500 font-bold">Próxima</span>
+                        </div>
+                        <h3 class="text-xl font-black text-gray-900">16:00 <span class="text-xs font-normal text-gray-500">- 500g</span></h3>
+                        <p class="text-xs text-gray-500 mt-1">Próxima Alimentação</p>
+                    </div>
+                </div>
+
+                <!-- Grid Principal / Ações -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Gráfico Simulador -->
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h3 class="font-bold text-gray-900">Temperatura — Últimas 24h</h3>
+                                <p class="text-xs text-gray-400">Intervalo ideal: 24–26 °C</p>
+                            </div>
+                            <button onclick="mudarPagina('monitoramento')" class="text-xs font-bold text-blue-600 hover:underline cursor-pointer">Ver detalhe →</button>
+                        </div>
+                        <div class="h-48 bg-gray-50 rounded-lg flex items-center justify-center border border-dashed border-gray-200">
+                            <div class="text-center text-gray-400">
+                                <i data-lucide="trending-up" class="w-8 h-8 mx-auto mb-1 text-blue-500"></i>
+                                <span class="text-xs font-medium">Gráfico de Variação Térmica Ativo</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações Rápidas & Resumo -->
+                    <div class="space-y-6">
+                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm space-y-3">
+                            <h3 class="font-bold text-gray-900 text-sm">Ações Rápidas</h3>
+                            <button onclick="alert('Comando enviado: Alimentação manual iniciada com sucesso!')" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs py-3 rounded-lg transition shadow-sm flex items-center justify-center space-x-2 cursor-pointer">
+                                <i data-lucide="fish" class="w-4 h-4"></i>
+                                <span>Alimentar Agora</span>
+                            </button>
+                            <button onclick="mudarPagina('agenda')" class="w-full bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold text-xs py-3 rounded-lg transition flex items-center justify-center space-x-2 cursor-pointer">
+                                <i data-lucide="calendar" class="w-4 h-4"></i>
+                                <span>Ver Agenda</span>
+                            </button>
+                        </div>
+
+                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-wider block mb-3">Resumo de Hoje</span>
+                            <div class="space-y-2 text-xs">
+                                <div class="flex justify-between py-1 border-b border-gray-100">
+                                    <span class="text-gray-500">Alimentações realizadas</span>
+                                    <span class="font-bold text-gray-900">2/4</span>
+                                </div>
+                                <div class="flex justify-between py-1 border-b border-gray-100">
+                                    <span class="text-gray-500">Total distribuído</span>
+                                    <span class="font-bold text-amber-500">950g</span>
+                                </div>
+                                <div class="flex justify-between py-1">
+                                    <span class="text-gray-500">Consumo médio</span>
+                                    <span class="font-bold text-green-600">98.5%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alertas Recentes no Dashboard -->
+                <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="font-bold text-gray-900">Alertas Recentes</h3>
+                        <button onclick="mudarPagina('alertas')" class="text-xs font-bold text-blue-600 hover:underline cursor-pointer">Ver todos →</button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <span class="text-[10px] font-bold text-red-600 uppercase">Crítico • Agora</span>
+                            <p class="text-xs font-bold text-gray-800 mt-1">Falha no Motor do Alimentador</p>
+                        </div>
+                        <div class="p-3 bg-amber-50 border border-amber-200 rounded-lg">
+                            <span class="text-[10px] font-bold text-amber-600 uppercase">Aviso • 15 min</span>
+                            <p class="text-xs font-bold text-gray-800 mt-1">Nível de Ração Baixo</p>
+                        </div>
+                        <div class="p-3 bg-red-50 border border-red-200 rounded-lg">
+                            <span class="text-[10px] font-bold text-red-600 uppercase">Crítico • 32 min</span>
+                            <p class="text-xs font-bold text-gray-800 mt-1">Temperatura Alta Detectada</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGINA: MONITORAMENTO ================= -->
+            <div id="view-monitoramento" class="hidden space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-gray-700 text-sm mb-1">Temperatura da Água</h3>
+                        <p class="text-3xl font-black text-blue-600 mb-2">24.5 °C</p>
+                        <p class="text-xs text-gray-500">Mín: 23.7 °C | Máx: 25.0 °C</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-gray-700 text-sm mb-1">Nível de pH</h3>
+                        <p class="text-3xl font-black text-green-600 mb-2">7.25 pH</p>
+                        <p class="text-xs text-gray-500">Condição ideal para cultivo</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                        <h3 class="font-bold text-gray-700 text-sm mb-1">Oxigênio na Água</h3>
+                        <p class="text-3xl font-black text-indigo-600 mb-2">8.2 mg/L</p>
+                        <p class="text-xs text-gray-500">Aeração funcionando perfeitamente</p>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                    <h3 class="font-bold text-gray-900 mb-4">Telemetria de Sensores em Tempo Real</h3>
+                    <div class="h-64 bg-gray-50 rounded-lg flex items-center justify-center border border-dashed border-gray-200 text-gray-400">
+                        Painel completo de gráficos de telemetria avançada
+                    </div>
+                </div>
+            </div>
+
+            <!-- ================= PAGINA: AGENDA ================= -->
+            <div id="view-agenda" class="hidden space-y-6">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between">
+                        <div>
+                            <h3 class="font-bold text-sm text-gray-900">Pausar Alimentação</h3>
+                            <p class="text-xs text-gray-500 mt-0.5">Pausar todo o sistema</p>
+                        </div>
+                        <input type="checkbox" class="w-5 h-5 accent-blue-600 cursor-pointer">
+                    </div>
+                    <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex justify-around items-center">
+                        <div><span class="text-2xl font-black text-gray-900">4</span> <span class="text-xs text-gray-500 font-medium">Programadas</span></div>
+                        <div><span class="text-2xl font-black text-blue-600">3</span> <span class="text-xs text-gray-500 font-medium">Ativas</span></div>
+                        <div><span class="text-2xl font-black text-amber-500">1.85</span> <span class="text-xs text-gray-500 font-medium">Total (kg)</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                    <div class="p-5 border-b border-gray-200 flex justify-between items-center">
+                        <h3 class="font-bold text-gray-900 text-base">Horários Programados</h3>
+                        <button onclick="alert('Adicionar novo horário')" class="bg-blue-600 text-white text-xs font-bold px-4 py-2 rounded-lg cursor-pointer">+ Nova Alimentação</button>
+                    </div>
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-gray-50 text-xs text-gray-400 uppercase">
+                            <tr>
+                                <th class="py-3 px-6">Horário</th>
+                                <th class="py-3 px-6">Quantidade</th>
+                                <th class="py-3 px-6">Frequência</th>
+                                <th class="py-3 px-6">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr>
+                                <td class="py-4 px-6 font-bold text-blue-600">08:00</td>
+                                <td class="py-4 px-6">500g</td>
+                                <td class="py-4 px-6 text-gray-500">Diário</td>
+                                <td class="py-4 px-6"><span class="px-2 py-1 bg-green-50 text-green-600 text-xs font-semibold rounded-full">Ativo</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 font-bold text-blue-600">12:00</td>
+                                <td class="py-4 px-6">450g</td>
+                                <td class="py-4 px-6 text-gray-500">Diário</td>
+                                <td class="py-4 px-6"><span class="px-2 py-1 bg-green-50 text-green-600 text-xs font-semibold rounded-full">Ativo</span></td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 font-bold text-blue-600">16:00</td>
+                                <td class="py-4 px-6">500g</td>
+                                <td class="py-4 px-6 text-gray-500">Diário</td>
+                                <td class="py-4 px-6"><span class="px-2 py-1 bg-green-50 text-green-600 text-xs font-semibold rounded-full">Ativo</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ================= PAGINA: ALERTAS ================= -->
+            <div id="view-alertas" class="hidden space-y-4">
+                <div class="bg-red-50 border border-red-200 p-4 rounded-xl flex justify-between items-center">
+                    <div>
+                        <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Crítico</span>
+                        <h4 class="font-bold text-gray-900 mt-1">Falha no Motor do Alimentador</h4>
+                        <p class="text-xs text-gray-500">O motor não respondeu ao comando programado das 12:00.</p>
+                    </div>
+                    <span class="text-xs text-gray-400 font-medium">Agora</span>
+                </div>
+                <div class="bg-amber-50 border border-amber-200 p-4 rounded-xl flex justify-between items-center">
+                    <div>
+                        <span class="bg-amber-500 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Aviso</span>
+                        <h4 class="font-bold text-gray-900 mt-1">Nível de Ração Baixo</h4>
+                        <p class="text-xs text-gray-500">O reservatório principal está abaixo de 15% de capacidade.</p>
+                    </div>
+                    <span class="text-xs text-gray-400 font-medium">há 15 min</span>
+                </div>
+                <div class="bg-red-50 border border-red-200 p-4 rounded-xl flex justify-between items-center">
+                    <div>
+                        <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Crítico</span>
+                        <h4 class="font-bold text-gray-900 mt-1">Temperatura Alta Detectada</h4>
+                        <p class="text-xs text-gray-500">A temperatura do tanque 02 subiu acima de 26.5 °C.</p>
+                    </div>
+                    <span class="text-xs text-gray-400 font-medium">há 32 min</span>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Script de Navegação -->
+    <script>
+        lucide.createIcons();
+
+        const titulos = {
+            dashboard: { title: "Dashboard", subtitle: "Visão geral do sistema SmartFish" },
+            monitoramento: { title: "Monitoramento", subtitle: "Acompanhamento em tempo real dos sensores e qualidade da água" },
+            agenda: { title: "Agenda", subtitle: "Gerencie os horários e quantidades de ração" },
+            alertas: { title: "Central de Alertas", subtitle: "Histórico e avisos críticos do sistema operacional" }
+        };
+
+        function mudarPagina(pagina) {
+            // Esconde todas as views
+            ['dashboard', 'monitoramento', 'agenda', 'alertas'].forEach(p => {
+                document.getElementById('view-' + p).classList.add('hidden');
+                const btn = document.getElementById('nav-' + p);
+                btn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition cursor-pointer";
+                if(p === 'alertas') {
+                    btn.innerHTML = `<div class="flex items-center space-x-3"><i data-lucide="bell" class="w-5 h-5"></i><span class="text-sm font-medium">Alertas</span></div><span class="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">3</span>`;
+                }
+            });
+
+            // Mostra a view selecionada
+            document.getElementById('view-' + pagina).classList.remove('hidden');
+            
+            // Ativa o botão correspondente
+            const ativoBtn = document.getElementById('nav-' + pagina);
+            ativoBtn.className = "w-full flex items-center space-x-3 px-3 py-2.5 rounded-lg bg-blue-600 text-white shadow-md transition cursor-pointer";
+
+            // Atualiza cabeçalho
+            document.getElementById('page-title').textContent = titulos[pagina].title;
+            document.getElementById('page-subtitle').textContent = titulos[pagina].subtitle;
+
+            lucide.createIcons();
+        }
+    </script>
 </body>
 </html>
